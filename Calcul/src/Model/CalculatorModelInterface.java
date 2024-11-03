@@ -1,5 +1,6 @@
 package Model;
 
+import java.util.Stack;
 import java.util.List;
 public interface CalculatorModelInterface {
 
@@ -22,6 +23,8 @@ public interface CalculatorModelInterface {
     public void swap() ;
 
     public void clear();
+
+    Stack<Double> getStack();
 
 
 

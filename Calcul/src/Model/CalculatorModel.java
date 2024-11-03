@@ -10,9 +10,9 @@ public class CalculatorModel implements CalculatorModelInterface {
         this.stack = new Stack<>();
         this.accu = "";
     }
-
+    @Override
     public Stack<Double> getStack() {
-        return stack;
+        return this.stack;
     }
 
     public void setStack(Stack<Double> stack) {

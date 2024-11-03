@@ -1,35 +1,22 @@
 package Main;
-
-import Controller.CalculatorController;
 import javafx.application.Application;
 import javafx.scene.Scene;
-import javafx.scene.image.Image;
 import javafx.stage.Stage;
-import Model.*;
-import GUI.*;
-;
+import GUI.CalculatorGUI;
 
 public class Main extends Application {
-    public static void main(String[] args) {
-
-
-        Application.launch(args);
-    }
-
+    @Override
     public void start(Stage primaryStage) {
+        CalculatorGUI calculatorGUI = new CalculatorGUI();
+        Scene scene = new Scene(calculatorGUI.getViewRoot(), 300, 500);
+        scene.getStylesheets().add(getClass().getResource("styles.css").toExternalForm()); // Load CSS
 
-        CalculatorModelInterface model = new CalculatorModel();
-        CalculatorGUIInterface view = new CalculatorGUI();
-
-        new CalculatorController(view, model);
-        primaryStage.setTitle("Ma calculette");
-        //Image icon = new Image("./view/icon.png");
-        // primaryStage.getIcons().add(icon);
-        Scene scene = new Scene(((CalculatorGUI) view).getVeiwRoot(), 300, 600);
         primaryStage.setScene(scene);
-        //scene.getStylesheets().add("./view/styles.css");
-        primaryStage.setResizable(false);
+        primaryStage.setTitle("Ma calculette");
         primaryStage.show();
     }
 
+    public static void main(String[] args) {
+        launch(args);
+    }
 }

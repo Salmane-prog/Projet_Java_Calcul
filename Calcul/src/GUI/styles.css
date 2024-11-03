@@ -1,0 +1,10 @@
+
+.squircle-button {
+    -fx-background-color: #d3d3d3; /* Light gray background */
+    -fx-background-radius: 20;     /* Rounded corners for squircle effect */
+    -fx-padding: 10;               /* Adjust padding for visual effect */
+    -fx-border-color: #a9a9a9;     /* Optional: Border color */
+    -fx-border-radius: 20;         /* Border rounded corners */
+    -fx-font-size: 17px;           /* Font size */
+    -fx-font-weight: bold;         /* Font weight */
+}

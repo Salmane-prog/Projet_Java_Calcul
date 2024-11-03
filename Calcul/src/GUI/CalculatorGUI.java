@@ -1,100 +1,68 @@
 package GUI;
 
 import java.util.Stack;
-
 import Controller.CalculatorControllerInterface;
-import GUI.CalculatorGUIInterface;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 
-
 public class CalculatorGUI implements CalculatorGUIInterface {
-    private  StackPane root;
+    private StackPane root;
     private CalculatorControllerInterface controller;
-    Stack<TextField> stackValueTextFields = new Stack<>();
-    private StringProperty accuField;
-
+    private StringProperty accuField;  // For displaying result
+    private TextArea historyArea;  // New area for history
 
     public CalculatorGUI() {
         VBox listValues = new VBox(5);
-        Stack<Double> stackValues = new Stack<>();
-        for (int i = 0; i <4; i++) {
-            stackValues.push(null);
-        }
 
+        // Initialize accumulator field
         accuField = new SimpleStringProperty("");
 
-        // Création des champs de texte pour les valeurs de la pile
-        for (Double value : stackValues) {
-            String stringValue =value == null ? "" : value.toString();
-
-            TextField stackValue = new TextField();
-            stackValue.setEditable(false);
-            stackValue.getStyleClass().add("stack-fields");
-            stackValue.textProperty().set(stringValue);
-            listValues.getChildren().addAll(stackValue);
-            stackValueTextFields.push(stackValue);
-        }
+        // History Area (replaces the four individual fields)
+        historyArea = new TextArea();
+        historyArea.setEditable(false);
+        historyArea.setPrefHeight(100);  // Set a preferred height for history area
+        historyArea.setStyle("-fx-font-size: 14px;");
+        historyArea.setPromptText("Operation History");
 
 
-        // Création d'un champ de texte pour afficher le résultat
+        // Result Field (single TextField to show the result)
         TextField resultField = new TextField();
         resultField.setEditable(false);
         resultField.textProperty().bindBidirectional(accuField);
         resultField.getStyleClass().add("result-field");
+        resultField.setPrefHeight(70);
 
-        listValues.getChildren().add(resultField);
+        // Add the history and result fields to the layout
+        listValues.getChildren().addAll(historyArea, resultField);
 
-        // Création d'une grille de boutons pour les opérations
+        // Create button grid for calculator operations
         GridPane gridPane = new GridPane();
         gridPane.setAlignment(Pos.CENTER);
         gridPane.setHgap(10);
         gridPane.setVgap(10);
 
-        // Labels des boutons
-        String[] buttonLabels = {"CL", "C", "+/-","/", "7", "8", "9", "*", "4", "5", "6", "-", "1", "2", "3", "+", "←", "0", ".", "<>", "swap"};
+        // Labels for buttons
+        String[] buttonLabels = {"CL", "C", "+/-", "/", "7", "8", "9", "*", "4", "5", "6", "-", "1", "2", "3", "+", "←", "0", ".", "<>"};
 
         int col = 0;
         int row = 0;
 
-        // Création de l'ensemble des bouttons
+        // Create and style buttons
         for (String label : buttonLabels) {
             Button button = new Button(label);
             button.setPrefSize(50, 50);
-            button.setStyle("-fx-font-size: 17px; -fx-font-weight: 900;");
+            button.getStyleClass().add("squircle-button");  // Apply squircle style
 
-            // Ajout des styles aux boutons en fonction de leur label
-            if(label=="/" || label=="*" || label=="+" || label=="-" || label=="<>") {
-                button.getStyleClass().add("orange-button");
-            }
-            else if(label=="+/-" || label=="CL" || label=="C") {
-                button.getStyleClass().add("gray-button");
-            }
-            else {
-                button.getStyleClass().add("black-button");
-            }
-
-            if (label.equals("swap")) {
-                GridPane.setColumnSpan(button, 4);
-                button.setMaxWidth(Double.MAX_VALUE);
-                button.setMaxHeight(Double.MAX_VALUE);
-            }
-
-            // Associe une action à chaque bouton
-            button.setOnAction(event -> {
-                change(label);
-            });
-
+            button.setOnAction(event -> change(label));
             gridPane.add(button, col, row);
 
             col++;
@@ -104,18 +72,29 @@ public class CalculatorGUI implements CalculatorGUIInterface {
             }
         }
 
+        // Add "swap" and "isEmpty" buttons in the last row, each spanning two columns
+        Button swapButton = new Button("swap");
+        swapButton.setPrefSize(100, 50);
+        swapButton.getStyleClass().add("squircle-button");
+        swapButton.setOnAction(event -> change("swap"));
+        gridPane.add(swapButton, 0, row, 2, 1); // Span 2 columns
 
+        Button isEmptyButton = new Button("isEmpty");
+        isEmptyButton.setPrefSize(100, 50);
+        isEmptyButton.getStyleClass().add("squircle-button");
+        isEmptyButton.setOnAction(event -> handleIsEmpty());
+        gridPane.add(isEmptyButton, 2, row, 2, 1); // Span 2 columns
+
+        // Set up the root StackPane with padding
         root = new StackPane();
-        Insets padding = new Insets(20);
-        root.setPadding(padding);
-        Insets margin = new Insets(220,0,0,0);
+        root.setPadding(new Insets(20));
+        Insets margin = new Insets(220, 0, 0, 0);
         root.setMargin(gridPane, margin);
         root.getStyleClass().add("background");
         root.getChildren().addAll(listValues, gridPane);
-    };
+    }
 
-
-    public StackPane getVeiwRoot() {
+    public StackPane getViewRoot() {
         return this.root;
     }
 
@@ -123,33 +102,44 @@ public class CalculatorGUI implements CalculatorGUIInterface {
         this.controller = controller;
     }
 
-
-    // Méthode d'interface pour afficher le résultat dans l'accumulateur
+    // Method to display the result in the accumulator
     @Override
     public void affiche(String accu) {
-        // TODO Auto-generated method stub
         this.accuField.setValue(accu);
     }
 
-
-    // Méthode d'interface pour gérer le changement d'état de la calculatrice
+    // Method to handle operations and button clicks
     @Override
     public void change(String value) {
-        // TODO Auto-generated method stub
-        this.controller.change(value);
+        controller.change(value);
     }
 
-    // Méthode d'interface pour mettre à jour les valeurs de la pile
+    // Method to update history and result fields
     @Override
     public void change(Stack<Double> stack) {
-        // TODO Auto-generated method stub
-        for (int i = 0; i < stackValueTextFields.size(); i++) {
-            String stringValue =stack.get(i) == null ? "" : stack.get(i).toString();
-            stackValueTextFields.get(stack.size()-1-i).textProperty().set(stringValue);
+        // Display the latest result at the top of the stack if it is not null
+        if (!stack.isEmpty() && stack.peek() != null) {
+            double result = stack.peek();
+            accuField.set(String.valueOf(result));
+        } else {
+            accuField.set(""); // Clear result field if stack is empty or top value is null
         }
 
-        return;
+        // Update history display with all stack values, checking for null values
+        StringBuilder historyText = new StringBuilder();
+        for (int i = stack.size() - 1; i >= 0; i--) {
+            Double value = stack.get(i);
+            historyText.append(value != null ? value.toString() : "").append("\n");
+        }
+        historyArea.setText(historyText.toString());
     }
 
-
+    // Method to handle the "isEmpty" button
+    private void handleIsEmpty() {
+        if (controller != null) {
+            boolean isEmpty = controller.isStackEmpty();
+            String message = isEmpty ? "Stack is empty" : "Stack is not empty";
+            historyArea.appendText(message + "\n");
+        }
+    }
 }

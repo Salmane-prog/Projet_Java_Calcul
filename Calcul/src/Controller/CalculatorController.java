@@ -19,7 +19,9 @@ public class CalculatorController implements CalculatorControllerInterface {
         ((CalculatorGUI) this.calculatorView).setController(this);
 
     }
-
+    public boolean isStackEmpty() {
+        return calculatorModel.getStack().isEmpty();
+    }
 
     public void change(String value) {
         switch (value) {
