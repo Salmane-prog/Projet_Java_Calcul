@@ -1,27 +1,23 @@
 package Controller;
 
-import GUI.CalculatorGUIInterface;
-import Model.CalculatorModelInterface;
 import java.util.Stack;
+
 import Model.CalculatorModel;
+import Model.CalculatorModelInterface;
+import GUI.CalculatorGUIInterface;
 import GUI.CalculatorGUI;
+
 
 public class CalculatorController implements CalculatorControllerInterface {
     private CalculatorGUIInterface calculatorView;
     private CalculatorModelInterface calculatorModel;
 
-    public CalculatorController(CalculatorModelInterface model, CalculatorGUIInterface view) {
+    public CalculatorController(CalculatorGUIInterface view,CalculatorModelInterface model) {
+        this.calculatorView = view;
         this.calculatorModel = model;
-        this.calculatorView = view;
 
-        if (view instanceof CalculatorGUI) {
-            ((CalculatorGUI) this.calculatorView).setController(this);
-        }
-    }
+        ((CalculatorGUI) this.calculatorView).setController(this);
 
-    // Method to set the view after controller initialization
-    public void setView(CalculatorGUIInterface view) {
-        this.calculatorView = view;
     }
 
 
