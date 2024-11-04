@@ -6,19 +6,21 @@ IMT Mines Alès – M1 – Pré-département 2IA
 
 
 Encadrées par :
-Charbel Daoud
 
+
+Charbel Daoud
 
 
 Christelle Urtado
 
 
-
 Sylvain Vauttier
-                                                                                     
-Realisés par :                                                                        
-EL HAJOUJI SALMANE          
 
+                                                                                     
+Realisés par :   
+
+
+EL HAJOUJI SALMANE          
 
 
 LABRIKI NAJOUA     
