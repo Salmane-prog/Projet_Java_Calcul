@@ -110,3 +110,30 @@
 .squircle-button.special-button:hover {
     -fx-background-color: #d1d1f0;
 }
+/* Style for error alert dialog */
+.error-alert {
+    -fx-background-color: #f0f0f0;
+    
+    -fx-border-width: 2px;
+    -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
+}
+
+/* Style the alert text */
+.dialog-pane .content.label {
+    -fx-text-fill: #323232; /* Dark gray text */
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+}
+
+/* Style for the button in the alert */
+.dialog-pane .button-bar .button {
+    -fx-background-color: #ff6666; /* Match the calculator's clear button color */
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 10px;
+}
+.dialog-pane .button-bar .button:hover {
+    -fx-background-color: #ff4c4c; /* Darker red on hover */
+}
+
