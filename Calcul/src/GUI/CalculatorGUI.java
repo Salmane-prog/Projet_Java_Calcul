@@ -6,7 +6,6 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -21,7 +20,7 @@ public class CalculatorGUI implements CalculatorGUIInterface {
     private TextArea historyArea;  // New area for history
 
     public CalculatorGUI() {
-        VBox listValues = new VBox(5);
+        VBox listValues = new VBox(10);  // Increase spacing between elements
 
         // Initialize accumulator field
         accuField = new SimpleStringProperty("");
@@ -29,10 +28,9 @@ public class CalculatorGUI implements CalculatorGUIInterface {
         // History Area (replaces the four individual fields)
         historyArea = new TextArea();
         historyArea.setEditable(false);
-        historyArea.setPrefHeight(100);  // Set a preferred height for history area
+        historyArea.setPrefHeight(150);  // Increase height for history area
         historyArea.setStyle("-fx-font-size: 14px;");
         historyArea.setPromptText("Operation History");
-
 
         // Result Field (single TextField to show the result)
         TextField resultField = new TextField();
@@ -62,6 +60,13 @@ public class CalculatorGUI implements CalculatorGUIInterface {
             button.setPrefSize(50, 50);
             button.getStyleClass().add("squircle-button");  // Apply squircle style
 
+            // Apply specific styles based on button label
+            if ("0123456789".contains(label)) {
+                button.getStyleClass().add("number-button");  // Number buttons
+            } else if ("C".equals(label) || "CL".equals(label)) {
+                button.getStyleClass().add("clear-button");  // Clear buttons
+            }
+
             button.setOnAction(event -> change(label));
             gridPane.add(button, col, row);
 
@@ -75,22 +80,22 @@ public class CalculatorGUI implements CalculatorGUIInterface {
         // Add "swap" and "isEmpty" buttons in the last row, each spanning two columns
         Button swapButton = new Button("swap");
         swapButton.setPrefSize(100, 50);
-        swapButton.getStyleClass().add("squircle-button");
+        swapButton.getStyleClass().addAll("squircle-button", "special-button");
         swapButton.setOnAction(event -> change("swap"));
         gridPane.add(swapButton, 0, row, 2, 1); // Span 2 columns
 
         Button isEmptyButton = new Button("isEmpty");
         isEmptyButton.setPrefSize(100, 50);
-        isEmptyButton.getStyleClass().add("squircle-button");
+        isEmptyButton.getStyleClass().addAll("squircle-button", "special-button");
         isEmptyButton.setOnAction(event -> handleIsEmpty());
         gridPane.add(isEmptyButton, 2, row, 2, 1); // Span 2 columns
 
         // Set up the root StackPane with padding
         root = new StackPane();
-        root.setPadding(new Insets(20));
-        Insets margin = new Insets(220, 0, 0, 0);
+        root.setPadding(new Insets(30));  // Increase padding for the layout
+        Insets margin = new Insets(250, 0, 0, 0);  // Adjust grid margin
         root.setMargin(gridPane, margin);
-        root.getStyleClass().add("background");
+        root.getStyleClass().add("background");  // Apply background style
         root.getChildren().addAll(listValues, gridPane);
     }
 
@@ -111,7 +116,9 @@ public class CalculatorGUI implements CalculatorGUIInterface {
     // Method to handle operations and button clicks
     @Override
     public void change(String value) {
-        controller.change(value);
+        if (controller != null) {
+            controller.change(value);
+        }
     }
 
     // Method to update history and result fields

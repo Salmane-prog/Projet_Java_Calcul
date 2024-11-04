@@ -1,10 +1,31 @@
+/* Background color for the entire calculator */
+.background {
+    -fx-background-color: #505050; /* Dark background */
+}
 
+/* General style for all buttons */
 .squircle-button {
-    -fx-background-color: #d3d3d3; /* Light gray background */
+    -fx-background-color: #d3d3d3; /* Default light gray background */
     -fx-background-radius: 20;     /* Rounded corners for squircle effect */
     -fx-padding: 10;               /* Adjust padding for visual effect */
     -fx-border-color: #a9a9a9;     /* Optional: Border color */
     -fx-border-radius: 20;         /* Border rounded corners */
     -fx-font-size: 17px;           /* Font size */
     -fx-font-weight: bold;         /* Font weight */
+    -fx-text-fill: white;          /* White text color */
+}
+
+/* Style for number buttons (0-9) */
+.squircle-button.number-button {
+    -fx-background-color: #D4D4D2; /* Number buttons in color #734158 */
+}
+
+/* Style for C and CL buttons */
+.squircle-button.clear-button {
+    -fx-background-color: #D76C58; /* C and CL buttons in color #D76C58 */
+}
+
+/* Style for swap and isEmpty buttons */
+.squircle-button.special-button {
+    -fx-background-color: #505050; /* swap and isEmpty buttons in color #7F5056 */
 }
