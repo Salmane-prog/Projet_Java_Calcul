@@ -6,20 +6,21 @@ import javafx.stage.Stage;
 import GUI.CalculatorGUI;
 import Model.CalculatorModel;
 import Controller.CalculatorController;
+import javafx.scene.image.Image;
 
 public class Main extends Application {
     @Override
     public void start(Stage primaryStage) {
-        // Initialize model and view
+        // Set application icon
+        primaryStage.getIcons().add(new Image("file:F:/IMT/Projet_Java_calcul/logo.png"));
+
+        // Existing setup code...
         CalculatorModel model = new CalculatorModel();
         CalculatorGUI calculatorGUI = new CalculatorGUI();
-
-        // Initialize controller and link it to the view and model
         CalculatorController controller = new CalculatorController(calculatorGUI, model);
-        calculatorGUI.setController(controller); // This is important to prevent the NullPointerException
+        calculatorGUI.setController(controller);
 
-        // Set up the scene with a fixed size
-        Scene scene = new Scene(calculatorGUI.getViewRoot(), 400, 700); // Adjust to your preferred fixed width and height
+        Scene scene = new Scene(calculatorGUI.getViewRoot(), 400, 700);
         String css = getClass().getResource("/GUI/styles.css") != null ? getClass().getResource("/GUI/styles.css").toExternalForm() : null;
         if (css != null) {
             scene.getStylesheets().add(css);
@@ -29,7 +30,7 @@ public class Main extends Application {
 
         primaryStage.setScene(scene);
         primaryStage.setTitle("Ma calculette");
-        primaryStage.setResizable(false); // Disable resizing to keep the window size fixed
+        primaryStage.setResizable(false);
         primaryStage.show();
     }
 
