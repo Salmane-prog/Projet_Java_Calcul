@@ -30,6 +30,7 @@ public class CalculatorGUI implements CalculatorGUIInterface {
         historyArea.setEditable(false);
         historyArea.setPrefHeight(150);  // Increase height for history area
         historyArea.setStyle("-fx-font-size: 14px;");
+        historyArea.getStyleClass().add("history-area");
         historyArea.setPromptText("Operation History");
 
         // Result Field (single TextField to show the result)
@@ -58,13 +59,21 @@ public class CalculatorGUI implements CalculatorGUIInterface {
         for (String label : buttonLabels) {
             Button button = new Button(label);
             button.setPrefSize(50, 50);
-            button.getStyleClass().add("squircle-button");  // Apply squircle style
+            button.getStyleClass().add("squircle-button"); // Apply general button style
 
-            // Apply specific styles based on button label
             if ("0123456789".contains(label)) {
-                button.getStyleClass().add("number-button");  // Number buttons
-            } else if ("C".equals(label) || "CL".equals(label)) {
-                button.getStyleClass().add("clear-button");  // Clear buttons
+                button.getStyleClass().add("number-button"); // Number buttons
+            } else if ("C".equals(label)) {
+                button.getStyleClass().add("clear-button");
+            } else if ("CL".equals(label)) {
+                button.getStyleClass().add("clear-button");
+                // Clear button
+            } else if ("+-*/".contains(label)) {
+                button.getStyleClass().add("operator-button"); // Operator buttons
+            } else if ("exp log sin cos tan".contains(label.toLowerCase())) {
+                button.getStyleClass().add("function-button"); // Function buttons
+            } else if ("isEmpty SWAP".contains(label)) {
+                button.getStyleClass().add("special-button"); // Special buttons
             }
 
             button.setOnAction(event -> change(label));

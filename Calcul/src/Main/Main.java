@@ -18,8 +18,8 @@ public class Main extends Application {
         CalculatorController controller = new CalculatorController(calculatorGUI, model);
         calculatorGUI.setController(controller); // This is important to prevent the NullPointerException
 
-        // Set up the scene with the loaded CSS
-        Scene scene = new Scene(calculatorGUI.getViewRoot(), 300, 500);
+        // Set up the scene with a fixed size
+        Scene scene = new Scene(calculatorGUI.getViewRoot(), 400, 700); // Adjust to your preferred fixed width and height
         String css = getClass().getResource("/GUI/styles.css") != null ? getClass().getResource("/GUI/styles.css").toExternalForm() : null;
         if (css != null) {
             scene.getStylesheets().add(css);
@@ -29,6 +29,7 @@ public class Main extends Application {
 
         primaryStage.setScene(scene);
         primaryStage.setTitle("Ma calculette");
+        primaryStage.setResizable(false); // Disable resizing to keep the window size fixed
         primaryStage.show();
     }
 
